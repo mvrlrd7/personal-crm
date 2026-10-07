@@ -2,6 +2,9 @@
 .env
 .env*.local
 
+# Personal session journal (local only)
+JOURNAL.md
+
 # Dependencies
 node_modules/
 
