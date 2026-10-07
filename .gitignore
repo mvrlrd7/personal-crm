@@ -1,0 +1,18 @@
+# Secrets
+.env
+.env*.local
+
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc
+.DS_Store
+*.log
