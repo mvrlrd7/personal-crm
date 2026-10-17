@@ -1,24 +1,22 @@
-import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
-/** Centered panel for "not found" and error screens. */
+import { MondrianCard } from "@/components/mondrian";
+
+/** Card for "not found" and error screens. */
 export function MessagePanel({
-  icon: Icon,
   title,
   description,
   children,
 }: {
-  icon: LucideIcon;
   title: string;
   description: string;
   children?: ReactNode;
 }) {
   return (
-    <div className="mx-auto flex max-w-md flex-col items-center rounded-xl border bg-background px-6 py-12 text-center">
-      <Icon aria-hidden className="mb-3 size-8 text-muted-foreground" />
-      <h1 className="text-lg font-semibold">{title}</h1>
-      <p className="mt-1 mb-6 text-sm text-muted-foreground">{description}</p>
-      {children}
-    </div>
+    <MondrianCard accent="red" className="max-w-xl">
+      <h1 className="text-22 leading-title font-semibold lg:text-28">{title}</h1>
+      <p className="mt-2.5 text-16 leading-body lg:text-17">{description}</p>
+      {children && <div className="mt-6">{children}</div>}
+    </MondrianCard>
   );
 }

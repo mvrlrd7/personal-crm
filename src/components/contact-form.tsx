@@ -78,12 +78,12 @@ export function ContactForm({
       </div>
 
       {state.message && (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="text-14 text-red">
           {state.message}
         </p>
       )}
 
-      <div className="flex flex-wrap gap-2 pt-1">
+      <div className="flex flex-wrap gap-3 pt-2">
         <Button type="submit" size="lg" disabled={pending}>
           {pending ? "Сохраняю…" : submitLabel}
         </Button>
@@ -114,7 +114,7 @@ function Field({
       <Label htmlFor={id}>
         {label}
         {required && (
-          <span className="text-muted-foreground" aria-hidden>
+          <span className="text-red" aria-hidden>
             *
           </span>
         )}
@@ -125,11 +125,10 @@ function Field({
         required={required}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
-        className="h-10 bg-background md:text-base"
         {...inputProps}
       />
       {error && (
-        <p id={errorId} className="text-sm text-destructive">
+        <p id={errorId} className="text-14 text-red">
           {error}
         </p>
       )}

@@ -30,15 +30,17 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       style={
         {
-          "--normal-bg": "var(--popover)",
-          "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)",
-          "--border-radius": "var(--radius)",
+          "--normal-bg": "var(--color-paper)",
+          "--normal-text": "var(--color-ink)",
+          "--normal-border": "var(--color-ink)",
+          "--border-radius": "0",
+          fontFamily: "var(--font-sans)",
         } as React.CSSProperties
       }
       toastOptions={{
         classNames: {
-          toast: "cn-toast",
+          // Sonner's own styles are unlayered, so these need "!" to win.
+          toast: "cn-toast border-3! text-15! font-medium! shadow-none!",
         },
       }}
       {...props}

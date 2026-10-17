@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { createContactAction } from "@/app/actions";
 import { BackLink } from "@/components/back-link";
 import { ContactForm } from "@/components/contact-form";
+import { MondrianCard } from "@/components/mondrian";
+import { PAGE_TITLE } from "@/lib/typography";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Новый контакт",
@@ -15,19 +18,17 @@ export default async function NewContactPage({
   const { name } = await searchParams;
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <div className="max-w-3xl">
       <BackLink href="/">Все контакты</BackLink>
-      <div className="rounded-xl border bg-background p-5 sm:p-8">
-        <h1 className="mb-6 text-2xl font-semibold tracking-tight">
-          Новый контакт
-        </h1>
+      <h1 className={cn(PAGE_TITLE, "mt-6 lg:mt-8")}>Новый контакт</h1>
+      <MondrianCard accent="blue" className="mt-7 lg:mt-10">
         <ContactForm
           action={createContactAction}
           defaultValues={{ name: typeof name === "string" ? name : "" }}
           submitLabel="Добавить контакт"
           cancelHref="/"
         />
-      </div>
+      </MondrianCard>
     </div>
   );
 }

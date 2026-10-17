@@ -23,7 +23,7 @@ export function NoteForm({ action }: NoteFormProps) {
   }, [state.savedAt]);
 
   return (
-    <form action={formAction} className="space-y-2">
+    <form action={formAction} className="space-y-3">
       <Label htmlFor="note-body" className="sr-only">
         Новая заметка
       </Label>
@@ -44,15 +44,15 @@ export function NoteForm({ action }: NoteFormProps) {
             event.currentTarget.form?.requestSubmit();
           }
         }}
-        className="min-h-24 bg-background md:text-base"
+        className="lg:text-17"
       />
       {state.error && (
-        <p id="note-body-error" role="alert" className="text-sm text-destructive">
+        <p id="note-body-error" role="alert" className="text-14 text-red">
           {state.error}
         </p>
       )}
-      <div className="flex items-center justify-end gap-3">
-        <span className="hidden text-xs text-muted-foreground sm:inline">
+      <div className="flex items-center justify-end gap-5">
+        <span className="hidden text-11 leading-none font-medium tracking-micro uppercase sm:inline lg:text-12">
           Ctrl + Enter — сохранить
         </span>
         <Button type="submit" disabled={pending}>

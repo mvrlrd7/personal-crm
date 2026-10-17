@@ -1,6 +1,5 @@
 "use client";
 
-import { TriangleAlertIcon } from "lucide-react";
 import { useEffect } from "react";
 
 import { MessagePanel } from "@/components/message-panel";
@@ -19,7 +18,6 @@ export default function ErrorPage({
 
   return (
     <MessagePanel
-      icon={TriangleAlertIcon}
       title="Не удалось загрузить данные"
       description="Проверьте, что база данных запущена, и попробуйте ещё раз."
     >

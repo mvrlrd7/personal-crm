@@ -1,0 +1,82 @@
+/*
+ * Design tokens — the only place where colors, fonts, type scale and spacing are defined.
+ * Same values as the landing (personal-crm-landing/src/styles/tokens.css), so the app and the landing look like one product.
+ * Tailwind default colors, font sizes and radii are reset so only these exist.
+ * When adding a token here, also add it to src/lib/utils.ts so class merging knows about it.
+ */
+
+@theme {
+  /* Colors (Mondrian palette) */
+  --color-*: initial;
+  --color-ink: #000000;
+  --color-ink-muted: #6b6b6b; /* app only: placeholders and empty values */
+  --color-paper: #ffffff;
+  --color-page: #e9e8e4;
+  --color-red: #d8281c;
+  --color-yellow: #f5c518;
+  --color-blue: #1d4ea0;
+
+  /* Font: Golos Text, loaded by next/font in layout.tsx */
+  --font-*: initial;
+  --font-sans: var(--font-golos-text), sans-serif;
+
+  /* No rounded corners anywhere */
+  --radius-*: initial;
+
+  /* Spacing: one step = 4px, so p-6 = 24px, gap-0.75 = 3px (Mondrian grid seams) */
+  --spacing: 0.25rem;
+
+  /* Font sizes, named by pixel size from the design */
+  --text-*: initial;
+  --text-11: 0.6875rem;
+  --text-12: 0.75rem;
+  --text-13: 0.8125rem;
+  --text-14: 0.875rem;
+  --text-15: 0.9375rem;
+  --text-16: 1rem;
+  --text-17: 1.0625rem;
+  --text-18: 1.125rem;
+  --text-19: 1.1875rem;
+  --text-20: 1.25rem;
+  --text-22: 1.375rem;
+  --text-27: 1.6875rem;
+  --text-28: 1.75rem;
+  --text-30: 1.875rem;
+  --text-32: 2rem;
+  --text-36: 2.25rem;
+  --text-38: 2.375rem;
+  --text-41: 2.5625rem;
+  --text-44: 2.75rem;
+  --text-52: 3.25rem;
+  --text-68: 4.25rem;
+  --text-76: 4.75rem;
+
+  /* Line heights */
+  --leading-*: initial;
+  --leading-display: 0.98;
+  --leading-none: 1;
+  --leading-heading: 1.02; /* mobile page title */
+  --leading-card-name: 1.05;
+  --leading-tight: 1.1;
+  --leading-closing: 1.15;
+  --leading-title: 1.2; /* item titles */
+  --leading-snug: 1.3; /* labels */
+  --leading-note: 1.45;
+  --leading-body: 1.5;
+  --leading-auto: normal;
+
+  /* Letter spacing */
+  --tracking-*: initial;
+  --tracking-display: -0.035em;
+  --tracking-heading: -0.03em;
+  --tracking-closing: -0.025em;
+  --tracking-name: -0.02em;
+  --tracking-meta: 0.06em;
+  --tracking-button: 0.08em; /* logo, buttons */
+  --tracking-micro: 0.1em; /* hints */
+  --tracking-label: 0.14em; /* labels */
+  --tracking-date: 0.16em; /* card date */
+
+  /* Widths */
+  --container-page: 1280px;
+}

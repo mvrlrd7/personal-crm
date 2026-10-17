@@ -25,8 +25,9 @@ const dateFormat = new Intl.DateTimeFormat("ru-RU", {
   year: "numeric",
 });
 
+/** "28 сентября 2025 г. в 23:35"; in a narrow column it wraps only before "в 23:35". */
 export function formatDateTime(date: Date): string {
-  return dateTimeFormat.format(date);
+  return dateTimeFormat.format(date).replace(" г. в ", " г. в ");
 }
 
 export function formatDate(date: Date): string {

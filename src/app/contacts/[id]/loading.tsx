@@ -2,23 +2,21 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {
   return (
-    <div className="space-y-6" aria-busy aria-label="Загрузка">
-      <Skeleton className="h-5 w-32" />
-      <div className="grid items-start gap-6 lg:grid-cols-[22rem_minmax(0,1fr)]">
-        <div className="space-y-5 rounded-xl border bg-background p-5 sm:p-6">
-          <div className="flex items-center gap-4">
-            <Skeleton className="size-14 rounded-full" />
-            <div className="flex-1 space-y-2">
-              <Skeleton className="h-6 w-40" />
-              <Skeleton className="h-4 w-52" />
-            </div>
+    <div aria-busy aria-label="Загрузка">
+      <Skeleton className="h-3.5 w-36" />
+      <div className="mt-6 grid items-start gap-x-16 gap-y-12 lg:mt-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+        <div className="grid grid-cols-[minmax(0,1fr)_--spacing(10)] gap-0.75 border-3 border-ink bg-ink sm:grid-cols-[minmax(0,1fr)_--spacing(16)]">
+          <div className="space-y-4 bg-paper px-4.5 pt-4.5 pb-5 sm:px-7 sm:pt-7 sm:pb-8">
+            <Skeleton className="h-3 w-40" />
+            <Skeleton className="h-8 w-56" />
+            <Skeleton className="h-3.5 w-48" />
+            <Skeleton className="h-28 w-full" />
           </div>
-          <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-10 w-full" />
+          <Skeleton />
         </div>
-        <div className="space-y-4 rounded-xl border bg-background p-5 sm:p-6">
-          <Skeleton className="h-6 w-28" />
-          <Skeleton className="h-24 w-full" />
+        <div className="space-y-5">
+          <Skeleton className="h-8 w-40" />
+          <Skeleton className="h-28 w-full" />
           <Skeleton className="h-20 w-full" />
         </div>
       </div>
