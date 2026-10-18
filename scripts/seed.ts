@@ -2,14 +2,14 @@
  * Fills an empty database with realistic test data: 1000 contacts and notes.
  * Refuses to run if there are contacts already, so real data is never touched.
  *
- * Usage: pnpm db:seed
+ * Usage: pnpm db:seed (in the production image: node tools/scripts/seed.ts)
  */
 import { count } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
-import { getDatabaseUrl, loadEnvFile } from "../src/db/config";
-import { contacts, notes, type NewNote } from "../src/db/schema";
+import { getDatabaseUrl, loadEnvFile } from "../src/db/config.ts";
+import { contacts, notes, type NewNote } from "../src/db/schema.ts";
 
 const CONTACT_COUNT = 1000;
 const BATCH_SIZE = 500;

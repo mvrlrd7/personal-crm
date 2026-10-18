@@ -6,15 +6,27 @@ import postgres from "postgres";
 import { getDatabaseUrl } from "./config";
 import * as schema from "./schema";
 
-// Reuse one connection pool across hot reloads in development.
-const globalForDb = globalThis as unknown as {
-  pgClient?: ReturnType<typeof postgres>;
-};
-
-const client = globalForDb.pgClient ?? postgres(getDatabaseUrl(), { max: 10 });
-
-if (process.env.NODE_ENV !== "production") {
-  globalForDb.pgClient = client;
+function createDb() {
+  return drizzle(postgres(getDatabaseUrl(), { max: 10 }), { schema });
 }
 
-export const db = drizzle(client, { schema });
+type Database = ReturnType<typeof createDb>;
+
+// Reuse one connection pool across hot reloads in development.
+const globalForDb = globalThis as unknown as { db?: Database };
+
+let db: Database | undefined;
+
+/**
+ * The database client, created on first use: `next build` loads this module
+ * without connection settings, which exist only at runtime.
+ */
+export function getDb(): Database {
+  if (!db) {
+    db = globalForDb.db ?? createDb();
+    if (process.env.NODE_ENV !== "production") {
+      globalForDb.db = db;
+    }
+  }
+  return db;
+}

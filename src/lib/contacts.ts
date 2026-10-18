@@ -3,7 +3,7 @@ import "server-only";
 import { desc, eq, sql } from "drizzle-orm";
 import { cache } from "react";
 
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { contacts, notes } from "@/db/schema";
 import type { ContactInput } from "@/lib/validation";
 
@@ -19,7 +19,7 @@ export type ContactListItem = {
 const byNameRu = sql`${contacts.name} collate "ru-x-icu"`;
 
 export async function listContacts(): Promise<ContactListItem[]> {
-  return db
+  return getDb()
     .select({
       id: contacts.id,
       name: contacts.name,
@@ -33,7 +33,7 @@ export async function listContacts(): Promise<ContactListItem[]> {
 
 /** Cached per request so that the page and its metadata share one query. */
 export const getContactWithNotes = cache(async (id: number) => {
-  const [contact] = await db
+  const [contact] = await getDb()
     .select()
     .from(contacts)
     .where(eq(contacts.id, id));
@@ -42,7 +42,7 @@ export const getContactWithNotes = cache(async (id: number) => {
     return null;
   }
 
-  const contactNotes = await db
+  const contactNotes = await getDb()
     .select()
     .from(notes)
     .where(eq(notes.contactId, id))
@@ -52,7 +52,7 @@ export const getContactWithNotes = cache(async (id: number) => {
 });
 
 export async function createContact(input: ContactInput): Promise<number> {
-  const [created] = await db
+  const [created] = await getDb()
     .insert(contacts)
     .values(input)
     .returning({ id: contacts.id });
@@ -64,7 +64,7 @@ export async function updateContact(
   id: number,
   input: ContactInput,
 ): Promise<boolean> {
-  const updated = await db
+  const updated = await getDb()
     .update(contacts)
     .set({ ...input, updatedAt: new Date() })
     .where(eq(contacts.id, id))
@@ -74,7 +74,7 @@ export async function updateContact(
 
 /** Returns false when the contact does not exist. */
 export async function addNote(contactId: number, body: string): Promise<boolean> {
-  return db.transaction(async (tx) => {
+  return getDb().transaction(async (tx) => {
     const touched = await tx
       .update(contacts)
       .set({ updatedAt: new Date() })

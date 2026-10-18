@@ -1,0 +1,56 @@
+# Production stack on the server, docker compose project "prod".
+# Started by deploy.sh, which sets APP_TAG to the image tag (the commit SHA).
+# Secrets come from ~/personal-crm/.env: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB.
+# Service names start with "crm-" because the server and the "prod" project are shared with the landing.
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "3"
+
+x-app: &app
+  image: ghcr.io/mvrlrd7/personal-crm:${APP_TAG:?set APP_TAG to the image tag}
+  env_file: ../.env
+  environment:
+    POSTGRES_HOST: crm-db
+  depends_on:
+    crm-db:
+      condition: service_healthy
+  logging: *logging
+
+services:
+  crm-db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    env_file: ../.env
+    volumes:
+      - crm-db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    logging: *logging
+
+  # One-off: applies migrations and exits. deploy.sh runs it before starting a new app image.
+  crm-migrate:
+    <<: *app
+    command: ["node", "tools/scripts/migrate.ts"]
+    profiles: ["tools"]
+
+  crm-app:
+    <<: *app
+    restart: unless-stopped
+    ports:
+      # Localhost only: nginx proxies app.remembr.cc here.
+      - "127.0.0.1:3000:3000"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  crm-db-data:

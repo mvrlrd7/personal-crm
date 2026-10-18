@@ -1,0 +1,20 @@
+# Secrets
+.env
+.env*
+
+# Built or installed inside the image
+node_modules
+.next
+*.tsbuildinfo
+next-env.d.ts
+
+# Not needed in the image
+.git
+.github
+.claude
+.vscode
+deploy
+Dockerfile
+.dockerignore
+JOURNAL.md
+*.log
