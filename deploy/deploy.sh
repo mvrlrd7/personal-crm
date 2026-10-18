@@ -40,7 +40,9 @@ elif [[ -n "$registry_user" ]]; then
   # Temporary credentials: the token lives only as long as this pull.
   docker_config=$(mktemp -d)
   trap 'rm -rf "$docker_config"' EXIT
-  docker --config "$docker_config" login ghcr.io -u "$registry_user" --password-stdin >/dev/null
+  if ! output=$(docker --config "$docker_config" login ghcr.io -u "$registry_user" --password-stdin 2>&1); then
+    fail "could not log in to GHCR: $output"
+  fi
   docker --config "$docker_config" pull --quiet "$IMAGE:$tag"
   rm -rf "$docker_config"
 else
@@ -58,19 +60,20 @@ log "App"
 "${COMPOSE[@]}" up -d --no-deps crm-app
 
 log "Smoke check $HEALTH_URL"
+# The app needs a few seconds to start, so early attempts may fail; only the last answer is shown.
 healthy=false
 for _ in $(seq 1 30); do
-  if curl -fsS --max-time 5 "$HEALTH_URL"; then
+  if response=$(curl -fsS --max-time 5 "$HEALTH_URL" 2>&1); then
     healthy=true
     break
   fi
   sleep 2
 done
+echo "$response"
 if ! $healthy; then
   "${COMPOSE[@]}" logs --tail 50 crm-app >&2 || true
   fail "smoke check failed: $HEALTH_URL did not answer 200. Nothing was rolled back. To go back to ${last_good:-the previous image} run: bash ~/personal-crm/deploy/rollback.sh"
 fi
-echo
 
 # Remember the last two good images; a redeploy of the same tag keeps the history as it is.
 if [[ "$tag" != "$last_good" ]]; then
