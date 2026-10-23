@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import {
   addNote,
   createContact,
+  deleteContact,
   parseContactId,
   updateContact,
 } from "@/lib/contacts";
@@ -33,7 +34,12 @@ export type NoteFormState = {
   savedAt?: number;
 };
 
+export type DeleteContactState = {
+  error?: string;
+};
+
 const SAVE_FAILED = "Не удалось сохранить. Попробуйте ещё раз.";
+const DELETE_FAILED = "Не удалось удалить. Попробуйте ещё раз.";
 const CONTACT_NOT_FOUND = "Контакт не найден — возможно, его удалили.";
 
 export async function createContactAction(
@@ -88,6 +94,26 @@ export async function updateContactAction(
   revalidatePath("/");
   revalidatePath(`/contacts/${id}`);
   redirect(`/contacts/${id}`);
+}
+
+export async function deleteContactAction(
+  contactId: number,
+): Promise<DeleteContactState> {
+  const id = parseContactId(contactId);
+  // A contact that is already gone counts as deleted: the result is the same.
+  if (id !== null) {
+    try {
+      await deleteContact(id);
+    } catch (error) {
+      console.error("Failed to delete contact", error);
+      return { error: DELETE_FAILED };
+    }
+  }
+
+  revalidatePath("/");
+  // Redirecting from the server keeps the deleted card from re-rendering as "not found".
+  // "deleted" tells the list to confirm the deletion, see ContactDeletedToast.
+  redirect("/?deleted=1");
 }
 
 export async function addNoteAction(

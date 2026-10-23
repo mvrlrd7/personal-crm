@@ -72,6 +72,11 @@ export async function updateContact(
   return updated.length > 0;
 }
 
+/** Deletes the contact; the database deletes its notes too. */
+export async function deleteContact(id: number): Promise<void> {
+  await getDb().delete(contacts).where(eq(contacts.id, id));
+}
+
 /** Returns false when the contact does not exist. */
 export async function addNote(contactId: number, body: string): Promise<boolean> {
   return getDb().transaction(async (tx) => {

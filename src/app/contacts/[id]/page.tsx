@@ -4,8 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { addNoteAction } from "@/app/actions";
+import { addNoteAction, deleteContactAction } from "@/app/actions";
 import { BackLink } from "@/components/back-link";
+import { DeleteContactButton } from "@/components/delete-contact-button";
 import { MondrianCard, accentFor } from "@/components/mondrian";
 import { NoteForm } from "@/components/note-form";
 import { Button } from "@/components/ui/button";
@@ -85,12 +86,19 @@ export default async function ContactPage({
               </Detail>
             </dl>
 
-            <Button asChild variant="outline" className="mt-6 lg:mt-7">
-              <Link href={`/contacts/${contact.id}/edit`}>
-                <PencilIcon data-icon="inline-start" />
-                Изменить
-              </Link>
-            </Button>
+            <div className="mt-6 flex flex-wrap gap-3 lg:mt-7">
+              <Button asChild variant="outline">
+                <Link href={`/contacts/${contact.id}/edit`}>
+                  <PencilIcon data-icon="inline-start" />
+                  Изменить
+                </Link>
+              </Button>
+              <DeleteContactButton
+                action={deleteContactAction.bind(null, contact.id)}
+                name={contact.name}
+                noteCount={contact.notes.length}
+              />
+            </div>
           </MondrianCard>
         </section>
 
