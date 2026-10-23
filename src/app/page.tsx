@@ -1,5 +1,6 @@
 import { connection } from "next/server";
 
+import { ContactDeletedToast } from "@/components/contact-deleted-toast";
 import { ContactDirectory } from "@/components/contact-directory";
 import { listContacts } from "@/lib/contacts";
 
@@ -8,5 +9,10 @@ export default async function HomePage() {
   await connection();
   const contacts = await listContacts();
 
-  return <ContactDirectory contacts={contacts} />;
+  return (
+    <>
+      <ContactDirectory contacts={contacts} />
+      <ContactDeletedToast />
+    </>
+  );
 }
